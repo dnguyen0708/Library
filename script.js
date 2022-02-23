@@ -38,11 +38,45 @@ const readCheckBox = document.querySelector("#status");
 
 let myLibrary = [...books];
 
-function Book(title, author, pages, status) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.status = status;
+class Book {
+    constructor(title, author, pages, status) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.status = status;
+    }
+    displayBooks() {
+        library.innerHTML = ''
+        myLibrary.forEach((book, index) => {
+            let newBook = document.createElement('div');
+            let title = document.createElement('h2');
+            let author = document.createElement('p');
+            let pages = document.createElement('p');
+            let status = document.createElement('p');
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = "Del";
+            removeBtn.addEventListener('click', (e) => this.removeBook(e, index));
+            removeBtn.classList = 'delete';
+            title.textContent = book.title;
+            author.textContent = `Author: ${book.author}`;
+            pages.textContent = `No. of pages: ${book.pages}`;
+            if (book.status) {
+                status.textContent = "Status: have read";
+            } else {
+                status.textContent = "Status: not read";
+            }
+            newBook.append(title, author, pages, status, removeBtn);
+            newBook.classList = 'book';
+            library.append(newBook);
+        });
+    }
+    removeBook(e, i) {
+        e.target.parentNode.remove();
+        myLibrary.splice(i, 1);
+        this.displayBooks();
+        // console.log(myLibrary);
+    }
+
 }
 
 function addBookToLibrary(e) {
@@ -54,41 +88,9 @@ function addBookToLibrary(e) {
         readCheckBox.checked);
     myLibrary.push(newBook);
     closeForm();
-    displayBooks();
+    book.displayBooks();
 }
 
-function displayBooks() {
-    library.innerHTML = ''
-    myLibrary.forEach((book, index) => {
-        let newBook = document.createElement('div');
-        let title = document.createElement('h2');
-        let author = document.createElement('p');
-        let pages = document.createElement('p');
-        let status = document.createElement('p');
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = "Del";
-        removeBtn.addEventListener('click', (e) => removeBook(e, index));
-        removeBtn.classList = 'delete';
-        title.textContent = book.title;
-        author.textContent = `Author: ${book.author}`;
-        pages.textContent = `No. of pages: ${book.pages}`;
-        if (book.status) {
-            status.textContent = "Status: have read";
-        } else {
-            status.textContent = "Status: not read";
-        }
-        newBook.append(title, author, pages, status, removeBtn);
-        newBook.classList = 'book';
-        library.append(newBook);
-    });
-}
-
-function removeBook(e, i) {
-    e.target.parentNode.remove();
-    myLibrary.splice(i, 1);
-    displayBooks();
-    // console.log(myLibrary);
-}
 
 function toggleForm() {
     bookForm.style.display = 'block';
@@ -108,4 +110,6 @@ closeBtn.addEventListener('click', closeForm);
 bookForm.addEventListener('submit', addBookToLibrary);
 
 
-displayBooks();
+let book = new Book();
+
+book.displayBooks();

@@ -99,13 +99,15 @@ button.add_book_btn:hover{
     /* transform: scale(1.1); */
     box-shadow: 0 0 14px 9px #FFB6C1;
 }
-.book_form button.close,.delete{
+.books .delete{
     background-color: red;
     border-radius: 5px;
     position: absolute;
     right: 20px;
 }
-
+.close{
+    background-color: red;
+}
 .delete{
     width: 69px;
     margin-top: 20px;
